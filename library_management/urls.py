@@ -24,6 +24,8 @@ urlpatterns = [
 
     path('', include('library_management.core.urls')),
 
+    path('employee/', include('library_management.employee.urls')),
+
     path('accounts/', include('library_management.users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

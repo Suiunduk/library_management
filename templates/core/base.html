@@ -108,7 +108,7 @@
                             </p>
                         </a>
                     </li>
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and user.user_type == 'super_user' %}
                         <li class="nav-item">
                             <a href="{% url 'country_list' %}" class="nav-link">
                                 <i class="nav-icon fas fa-list"></i>
@@ -141,7 +141,38 @@
                                 </p>
                             </a>
                         </li>
+                    {% elif user.is_authenticated and user.user_type == 'library_admin' %}
+                        <li class="nav-item">
+                            <a href="{% url 'employee_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    Список сотрудников
+                                </p>
+                            </a>
+                        </li>
                     {% endif %}
+
+                {% if user.is_authenticated and user.user_type == 'super_user' or user.user_type == 'employee' or user.user_type == 'library_admin' %}
+                    <li class="nav-item">
+                            <a href="{% url 'category_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Список жанров
+                                </p>
+                            </a>
+                        </li>
+                {% endif %}
+
+                {% if user.is_authenticated and user.user_type == 'employee' or user.user_type == 'library_admin' %}
+                    <li class="nav-item">
+                            <a href="{% url 'book_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Список книг
+                                </p>
+                            </a>
+                        </li>
+                {% endif %}
                 </ul>
             </nav>
         </div>

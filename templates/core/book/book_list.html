@@ -8,43 +8,36 @@
             <div class="card-body">
                 <div class="row pb-3">
                     <div class="col-12 text-right">
-                        <a class="btn btn-primary" href="{% url 'library_create' %}"><i class="fas fa-plus"></i> Добавить</a>
+                        <a class="btn btn-primary" href="{% url 'book_create' %}"><i class="fas fa-plus"></i> Добавить</a>
                     </div>
                 </div>
-                <table id="country_table" style="width: 100%" class="table table-bordered table-hover" data-page-length='100'>
-                    <thead class="thead-light">
-                      <tr>
-                        <th>№</th>
-                        <th>Название</th>
-                        <th>Адрес</th>
-                        <th>Район</th>
-                        <th class="text-center">Действия</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for library in libraries %}
-                            <tr>
-                              <td>{{ forloop.counter}}</td>
-                              <td>{{ library.name}}</td>
-                              <td>{{ library.address}}</td>
-                              <td>{{ library.district.name}}</td>
-                              <td class="text-center">
-                                  <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                      <a href="{% url 'library_update' library.id %}" class="btn btn-sm btn-outline-dark">
-                                          <i class="fa fa-edit"></i> Изменить
-                                      </a>
-                                      <a href="{% url 'library_user_list' library.id %}" class="btn btn-sm btn-outline-success">
-                                          <i class="fa fa-users"></i> Сотрудники
-                                      </a>
-                                      <a href="{% url 'library_delete' library.id %}" class="btn btn-sm btn-outline-danger">
-                                          <i class="fa fa-trash"></i> Удалить
-                                      </a>
-                                  </div>
-                              </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                  </table>
+                {% if books %}
+
+                    <div class="row pb-3">
+                        <form class="col-6" id="searchform" action="{% url 'search_b' %}" method="get">
+                            <input type="text" class="form-control"  placeholder="Введите название книги или автора " name="q" type="text"/>
+                            <button type="button"  class="btn btn-success form-control" onclick="searchform.submit()">Искать</button>
+                        </form>
+                    </div>
+                    <div class="row mx-auto">
+                      {% for book in books %}
+
+
+                    <div class="col-md-3 col-lg-3 mb-4 shadow p-2 mb-4 bg-white rounded">
+                      <div class="card mx-auto text-center ">
+                      <img class="card-img-top" src="{{ book.photo.url }}" alt="Изображение" height="400px" width="300px">
+                        <div class="card-body">
+                          <h2 class="card-title">    <a href="#">{{ book.name }}</a> ({{book.author}})</h2>
+                        </div>
+                      </div>
+                    </div>
+                      {% endfor %}
+                    </div>
+
+
+                    {% else %}
+                      <p class=" bg bg-white">Книг не найдено</p>
+                    {% endif %}
             </div>
           </div>
       </div>

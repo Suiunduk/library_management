@@ -1,6 +1,8 @@
+from django.conf.urls import url
 from django.urls import path
 
 from library_management.core import views
+from library_management.core.views import EmployeeCreateView
 
 urlpatterns = [
     # Homepage url
@@ -25,4 +27,21 @@ urlpatterns = [
     path('library/create', views.library_create, name='library_create'),
     path('library/update/<int:pk>', views.library_update, name='library_update'),
     path('library/delete/<int:pk>', views.library_delete, name='library_delete'),
+
+    path('category/list', views.category_list, name='category_list'),
+    path('category/create', views.category_create, name='category_create'),
+    path('category/update/<int:pk>', views.category_update, name='category_update'),
+    path('category/delete/<int:pk>', views.category_delete, name='category_delete'),
+
+
+    path('library/user/list/<int:pk>', views.library_user_list, name='library_user_list'),
+    path('library/user/create/<int:fk>', EmployeeCreateView.as_view(), name='library_user_create'),
+    path('library/user/delete/<int:pk>/', views.employee_delete, name='library_user_delete'),
+
+    path('book/list', views.book_list, name='book_list'),
+    path('book/create', views.book_create, name='book_create'),
+    path('book/update/<int:pk>/', views.book_update, name='book_update'),
+    path('book/delete/<int:pk>/', views.book_delete, name='book_delete'),
+
+    url(r'^book/list/search_b/', views.search_book, name="search_b"),
 ]

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'crispy_forms',
     'library_management.core.apps.CoreConfig',
-    'library_management.users.apps.UsersConfig'
+    'library_management.users.apps.UsersConfig',
+    'library_management.employee.apps.EmployeeConfig'
 
 ]
 

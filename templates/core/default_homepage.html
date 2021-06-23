@@ -7,10 +7,12 @@
               <div class="card-header">
                   <h3 class="text-success">Добро пожаловать в систему!</h3>
               </div>
+              {% if user.is_authenticated == False %}
               <div class="card-body">
                   <h5>Для продолжения работы выполните вход систему.</h5>
                   <a href="{% url 'login' %}" class="btn btn-success mt-3"><i class="fa fa-sign-in-alt"></i> ВОЙТИ</a>
               </div>
+              {% endif %}
           </div>
 
       </div>
