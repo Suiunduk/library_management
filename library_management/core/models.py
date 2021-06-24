@@ -84,7 +84,8 @@ class Book(models.Model):
 
 class BookInstance(models.Model):
     book = models.ForeignKey(Book, verbose_name=_("Книга"), on_delete=models.DO_NOTHING)
-    is_free = models.BooleanField(verbose_name=_("Занят"), default=True)
+    is_free = models.BooleanField(verbose_name=_("Свободна"), default=True)
+    qr_code = models.TextField(verbose_name=_("QR код"))
 
     def __str__(self):
         return f'{self.book.name}'

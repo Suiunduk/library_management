@@ -13,3 +13,13 @@ class Employee(models.Model):
 
     def __str__(self):
         return f'{self.custom_user.email}'
+
+
+class Student(models.Model):
+    custom_user = models.ForeignKey(CustomUser, verbose_name=_("Пользователь"), on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, verbose_name=_("Библиотека"), on_delete=models.CASCADE)
+    phone_number = models.CharField(verbose_name=_("Номер телефона"), max_length=20, null=True)
+
+    def __str__(self):
+        return f'{self.custom_user.email}'
+

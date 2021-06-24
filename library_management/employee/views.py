@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
 
-from library_management.core.decorators import library_admin_required
-from library_management.core.forms import EmployeeCreateForm
+from library_management.core.decorators import library_admin_required, admin_or_emp_required
+from library_management.core.forms import EmployeeCreateForm, StudentCreateForm
 from library_management.core.models import Library
-from library_management.employee.models import Employee
+from library_management.employee.models import Employee, Student
 from library_management.users.models import CustomUser
 
 
@@ -50,3 +50,35 @@ def employee_delete(request, pk):
     employee.delete()
 
     return redirect('employee_list')
+
+
+@admin_or_emp_required
+def student_list(request):
+    custom_user = CustomUser.objects.get(id=request.user.id)
+    employee = Employee.objects.get(custom_user=custom_user)
+    students = Student.objects.filter(library=employee.library)
+
+    return render(request, 'student/student_list.html', {'students': students, 'title': 'Список студентов'})
+
+
+@method_decorator([login_required, admin_or_emp_required], name='dispatch')
+class StudentCreateView(SuccessMessageMixin, CreateView):
+    model = CustomUser
+    form_class = StudentCreateForm
+    template_name = 'core/library/student_form.html'
+    success_message = "Новый студент успешно добавлен"
+
+    def get_context_data(self, **kwargs):
+            kwargs['user_type'] = 'student'
+            return super().get_context_data(**kwargs)
+
+    def get_form(self, **kwargs):
+        form = super(StudentCreateView, self).get_form()
+        return form
+
+    def form_valid(self, form):
+        custom_user = CustomUser.objects.get(id=self.request.user.id)
+        employee = Employee.objects.get(custom_user=custom_user)
+        form.library = employee.library
+        user = form.save()
+        return redirect('student_list')

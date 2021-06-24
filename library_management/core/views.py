@@ -1,6 +1,9 @@
 import re
 from datetime import date
+from io import BytesIO
 
+import qrcode
+import qrcode.image.svg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -335,6 +338,35 @@ def search_book(request):
         books = Book.objects.filter(entry_query).filter(library=employee.library)
 
     return render(request, 'core/book/book_list.html', locals())
+
+
+@admin_or_emp_required
+def book_details(request, pk):
+    book = Book.objects.get(id=pk)
+    book_instances = BookInstance.objects.filter(book=book)
+
+    return render(request, 'core/book/book_details.html', {'book_instances': book_instances,
+                                                           'book': book,
+                                                           'title': 'Информация о книге'})
+
+
+@admin_or_emp_required
+def book_add_instance(request, pk):
+    book = Book.objects.get(id=pk)
+
+    book_instance = BookInstance.objects.create(book=book, is_free=True)
+    book_instance.qr_code = generate_qr(request, book_instance.id)
+    book_instance.save()
+
+    return redirect('book_details', book.id)
+
+
+def generate_qr(request, pk):
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make(pk, image_factory=factory, box_size=15)
+    stream = BytesIO()
+    img.save(stream)
+    return stream.getvalue().decode()
 
 
 def get_query(query_string, search_fields):

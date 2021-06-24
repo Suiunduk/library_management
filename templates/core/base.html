@@ -165,10 +165,18 @@
 
                 {% if user.is_authenticated and user.user_type == 'employee' or user.user_type == 'library_admin' %}
                     <li class="nav-item">
-                            <a href="{% url 'book_list' %}" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                        <a href="{% url 'book_list' %}" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Список книг
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                            <a href="{% url 'student_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    Список книг
+                                    Список студентов
                                 </p>
                             </a>
                         </li>
