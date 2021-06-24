@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-from library_management.core.models import Library
+from library_management.core.models import Library, BookInstance
 from library_management.users.models import CustomUser
 
 
@@ -22,4 +22,9 @@ class Student(models.Model):
 
     def __str__(self):
         return f'{self.custom_user.email}'
+
+
+class StudentBooks(models.Model):
+    book_instance = models.ForeignKey(BookInstance, verbose_name=_("Книга"), on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, verbose_name=_("Студент"), on_delete=models.CASCADE)
 

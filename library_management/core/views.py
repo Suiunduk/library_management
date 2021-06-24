@@ -16,11 +16,11 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView, DeleteView
 
-from library_management.core.decorators import superuser_required, admin_or_emp_required
+from library_management.core.decorators import superuser_required, admin_or_emp_required, student_required
 from library_management.core.forms import CountryForm, RegionForm, DistrictForm, LibraryForm, EmployeeCreateForm, \
     CategoryForm, BookForm
 from library_management.core.models import Country, Region, District, Library, Category, Book, BookInstance
-from library_management.employee.models import Employee
+from library_management.employee.models import Employee, Student, StudentBooks
 from library_management.users.models import CustomUser
 
 
@@ -402,3 +402,12 @@ def normalize_query(query_string,
 
     '''
     return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
+
+
+@student_required
+def book_list_student(request):
+    custom_user = CustomUser.objects.get(id=request.user.id)
+    student = Student.objects.get(custom_user=custom_user)
+    books = StudentBooks.objects.filter(student=student)
+
+    return render(request, 'core/book/student_book_list.html', {'books': books, 'title': 'Список моих книг'})

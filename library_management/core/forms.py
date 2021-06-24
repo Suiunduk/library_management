@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
 from library_management.core.models import Country, Region, District, Library, Category, Book, BookInstance
-from library_management.employee.models import Employee, Student
+from library_management.employee.models import Employee, Student, StudentBooks
 from library_management.users.models import CustomUser
 
 
@@ -41,6 +41,12 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ('name', 'description', 'author', 'photo', 'category')
+
+
+class StudentBookForm(forms.ModelForm):
+    class Meta:
+        model = StudentBooks
+        fields = ('student',)
 
 
 class EmployeeCreateForm(UserCreationForm):

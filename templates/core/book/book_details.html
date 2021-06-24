@@ -76,12 +76,15 @@
                               </td>
                               <td class="text-center">
                                   <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                                      <a href="#" class="btn btn-sm btn-outline-primary">
-                                          <i class="fa fa-info"></i> Подробнее
-                                      </a>
-                                      <a href="#" class="btn btn-sm btn-outline-danger">
-                                          <i class="fa fa-trash"></i> Удалить
-                                      </a>
+                                      {% if book.is_free %}
+                                          <a href="{% url 'give_book' book.id %}" class="btn btn-sm btn-outline-success">
+                                              <i class="fa fa-info"></i> Выдать книгу
+                                          </a>
+                                      {% else %}
+                                          <a href="{% url 'get_book' book.id %}" class="btn btn-sm btn-outline-danger">
+                                              <i class="fa fa-info"></i> Вернуть книгу
+                                          </a>
+                                      {% endif %}
                                   </div>
                               </td>
                             </tr>

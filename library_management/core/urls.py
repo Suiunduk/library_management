@@ -45,5 +45,7 @@ urlpatterns = [
     path('book/details/<int:pk>/', views.book_details, name='book_details'),
     path('book/add_instance/<int:pk>/', views.book_add_instance, name='book_add_instance'),
 
+    path('student/book/list', views.book_list_student, name='book_list_student'),
+
     url(r'^book/list/search_b/', views.search_book, name="search_b"),
 ]

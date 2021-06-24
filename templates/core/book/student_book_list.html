@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block main_content %}
+  <div class="row pb-3">
+      <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+                {% if books %}
+                    <div class="row mx-auto">
+                      {% for book in books %}
+                        <div class="mx-3 col-sm-2  col-md-3 col-lg-2 mb-4 shadow p-2 mb-4 bg-white rounded">
+                          <div class="card mx-auto text-center ">
+                          <img class="card-img-top" src="{{ book.book_instance.book.photo.url }}" alt="Изображение" width="200px">
+                            <div class="card-body">
+                              <h2 class="card-title">{{ book.book_instance.book.name }} ({{book.book_instance.book.author}})</h2>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+
+
+                    {% else %}
+                      <p class=" bg bg-white">У вас пока нет книг</p>
+                    {% endif %}
+            </div>
+          </div>
+      </div>
+  </div>
+{% endblock main_content %}

@@ -5,9 +5,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
 
 from library_management.core.decorators import library_admin_required, admin_or_emp_required
-from library_management.core.forms import EmployeeCreateForm, StudentCreateForm
-from library_management.core.models import Library
-from library_management.employee.models import Employee, Student
+from library_management.core.forms import EmployeeCreateForm, StudentCreateForm, StudentBookForm
+from library_management.core.models import Library, BookInstance
+from library_management.employee.models import Employee, Student, StudentBooks
 from library_management.users.models import CustomUser
 
 
@@ -82,3 +82,31 @@ class StudentCreateView(SuccessMessageMixin, CreateView):
         form.library = employee.library
         user = form.save()
         return redirect('student_list')
+
+
+@admin_or_emp_required
+def give_book(request, pk):
+    book = BookInstance.objects.get(id=pk)
+    if request.method == "POST":
+        form = StudentBookForm(request.POST)
+        if form.is_valid():
+            book.is_free = False
+            book.save()
+            obj = form.save(commit=False)
+            obj.book_instance = book
+            obj.save()
+            return redirect('book_details', book.book.id)
+    else:
+        form = StudentBookForm()
+    return render(request, 'core/book/book_form.html', {'form': form, 'title': 'Выдача книги'})
+
+
+@admin_or_emp_required
+def get_book(request, pk):
+    book = BookInstance.objects.get(id=pk)
+    student_book = StudentBooks.objects.get(book_instance=book)
+    student_book.delete()
+    book.is_free = True
+    book.save()
+
+    return redirect('book_details', book.book.id)

@@ -181,6 +181,17 @@
                             </a>
                         </li>
                 {% endif %}
+
+                {% if user.is_authenticated and user.user_type == 'student' %}
+                    <li class="nav-item">
+                        <a href="{% url 'book_list_student' %}" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Список моих книг
+                            </p>
+                        </a>
+                    </li>
+                {% endif %}
                 </ul>
             </nav>
         </div>
